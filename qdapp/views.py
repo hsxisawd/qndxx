@@ -51,6 +51,7 @@ def do_wy(request):
         path="D20C050"+qishu+'青年大学习截图'
         classstr=evpath+path
         zipFile(classstr)
+        print(path+'.zip',classstr+'.zip')
         wx_duixiangcunchu(path+'.zip',classstr+'.zip')
         os.remove(classstr+'.zip')
         shutil.rmtree(classstr)
