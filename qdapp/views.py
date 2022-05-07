@@ -52,14 +52,15 @@ def do_wy(request):
         classstr=evpath+path
         zipFile(classstr)
         print(path+'.zip',classstr+'.zip')
-        wx_duixiangcunchu(path+'.zip',classstr+'.zip')
+        a=wx_duixiangcunchu(path+'.zip',classstr+'.zip')
         os.remove(classstr+'.zip')
         shutil.rmtree(classstr)
         student=Student.objects.filter(status=1)
         student.update(status=0)
         num.num=0
         num.save()
-    return redirect(reverse('app'))
+    # return redirect(reverse('app'))
+    return HttpResponse(a)
 
 def wx_duixiangcunchu(path,classstr):
       #获取token
@@ -70,7 +71,7 @@ def wx_duixiangcunchu(path,classstr):
       }#需填入env和path
     #转json
     data = json.dumps(data)
-    return HttpResponse(response.json())
+    return response.json()
     # response = requests.post("https://api.weixin.qq.com/tcb/uploadfile?access_token="+response.json()['access_token'],data,verify = False)
     #   #得到上传链接
     # data2={
