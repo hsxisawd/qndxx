@@ -52,7 +52,7 @@ def do_wy(request):
         classstr=evpath+path
         zipFile(classstr)
         print(path+'.zip',classstr+'.zip')
-        wx_duixiangcunchu(path+'.zip',classstr+'.zip')
+        #wx_duixiangcunchu(path+'.zip',classstr+'.zip')
         os.remove(classstr+'.zip')
         shutil.rmtree(classstr)
         student=Student.objects.filter(status=1)
