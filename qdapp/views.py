@@ -70,21 +70,22 @@ def wx_duixiangcunchu(path,classstr):
       }#需填入env和path
     #转json
     data = json.dumps(data)
-    response = requests.post("https://api.weixin.qq.com/tcb/uploadfile?access_token="+response.json()['access_token'],data,verify = False)
-      #得到上传链接
-    data2={
-        "Content-Type":(None,".zip"), #此处为上传文件类型
-        "key": (None,"image/"+path), #需填入path
-        "Signature": (None,response.json()['authorization']),
-        'x-cos-security-token': (None,response.json()['token']),
-        'x-cos-meta-fileid': (None,response.json()['cos_file_id']),
-        'file': (path,open(classstr, "rb")) #需填入本地文件路径
-        }
-    response2 = requests.post(response.json()['url'], files=data2,verify = False) #此处files提交的为表单数据，不为json数据，json数据或其他数据会报错
-    db=Fileid()
-    db.name=path
-    db.fileid=response.json()["file_id"]
-    db.save()
+    return HttpResponse(response.json())
+    # response = requests.post("https://api.weixin.qq.com/tcb/uploadfile?access_token="+response.json()['access_token'],data,verify = False)
+    #   #得到上传链接
+    # data2={
+    #     "Content-Type":(None,".zip"), #此处为上传文件类型
+    #     "key": (None,"image/"+path), #需填入path
+    #     "Signature": (None,response.json()['authorization']),
+    #     'x-cos-security-token': (None,response.json()['token']),
+    #     'x-cos-meta-fileid': (None,response.json()['cos_file_id']),
+    #     'file': (path,open(classstr, "rb")) #需填入本地文件路径
+    #     }
+    # response2 = requests.post(response.json()['url'], files=data2,verify = False) #此处files提交的为表单数据，不为json数据，json数据或其他数据会报错
+    # db=Fileid()
+    # db.name=path
+    # db.fileid=response.json()["file_id"]
+    # db.save()
 
 def zipFile(src_dir):
     zip_name = src_dir + '.zip'
