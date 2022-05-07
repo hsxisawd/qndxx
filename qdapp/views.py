@@ -11,7 +11,7 @@ import requests
 # Create your views here.
 
 qndxxlist=[i for i in range(1,16)]
-evpath = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'\\static\\img\\'
+evpath = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/static/img/'
 print(evpath)
 def wy(request):
     student = Student.objects.filter(status=0)
@@ -24,7 +24,7 @@ def do_wy(request):
     print(NUmber)
     if num.num!=24:
         qishu=request.POST['qda']
-        classstr="D20C050"+qishu+'青年大学习截图\\'
+        classstr="D20C050"+qishu+'青年大学习截图/'
         if os.path.exists(evpath+classstr)==False:
             os.makedirs(evpath+classstr)
             #wx_duixiangcunchu()
