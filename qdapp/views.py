@@ -60,7 +60,7 @@ def do_wy(request):
         num.num=0
         num.save()
     # return redirect(reverse('app'))
-    return HttpResponse(a)
+        return HttpResponse(a)
 
 def wx_duixiangcunchu(path,classstr):
       #获取token
