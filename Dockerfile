@@ -4,6 +4,7 @@
 # 选择基础镜像
 FROM python:3.8
 
+
 # 容器默认时区为UTC，如需使用上海时间请启用以下时区设置命令
 RUN apt-get update &&apt-get install tzdata && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo Asia/Shanghai > /etc/timezone
 
