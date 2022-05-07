@@ -63,7 +63,7 @@ def do_wy(request):
 
 def wx_duixiangcunchu(path,classstr):
       #获取token
-    response = requests.get('https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxc89ec0b61a9d8dae&secret=5c1e711a135a57233b60c4c27a22eda1',) #需填入appid和AppSecret
+    response = requests.get('https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxc89ec0b61a9d8dae&secret=5c1e711a135a57233b60c4c27a22eda1',verify = False) #需填入appid和AppSecret
     data ={
         "env": "prod-7gs5ov3sf092d402",
         "path": "image/"+path
