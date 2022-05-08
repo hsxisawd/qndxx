@@ -71,9 +71,9 @@ def wx_duixiangcunchu(path,classstr):
       }#需填入env和path
     #转json
     data = json.dumps(data)
-
-    response = requests.post("https://api.weixin.qq.com/tcb/uploadfile?access_token=56_OAGMWc-xTU1RHkyQaRSqHGW3IrcEOUKtwOeq8JzeFlmpNEBnzfDWtvBEviGlHlrDH5dxtr7XKJGrVMS2rxUrXOw1fv5g0KAUhaaOHC23pQvEKqQ98BevvbRhoJ2l03Kf9uwCeHNqw_FxNDIqMOSaAAATVZ",data,verify = False)
-      #得到上传链接response.json()['access_token']
+    print(response.json())
+    response = requests.post("https://api.weixin.qq.com/tcb/uploadfile?access_token="+response.json()['access_token'],data,verify = False)
+      #得到上传链接
     data2={
         "Content-Type":(None,".zip"), #此处为上传文件类型
         "key": (None,"image/"+path), #需填入path
