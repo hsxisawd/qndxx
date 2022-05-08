@@ -14,14 +14,20 @@ qndxxlist=[i for i in range(1,16)]
 evpath = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/static/img/'
 print(evpath)
 def wy(request):
+
     student = Student.objects.filter(status=0)
     slist = [a.name for a in student]
     strlist = '、'.join(slist)
-    return render(request, '1.html', {"qdlist": qndxxlist, 'student': strlist})
+    number=Num.objects.filter(id=1)
+    context={"qdlist": qndxxlist, 'student': strlist}
+    for i in number:
+        context['qdlink']=i.qdlink
+        context['qishuname']=i.qishuname
+    return render(request, '1.html',context)
 def do_wy(request):
     num=Num.objects.get(id=1)
     NUmber=num.num+1
-    print(NUmber)
+    xinxidb=Xinxi()
     if num.num!=24:
         qishu=request.POST['qda']
         classstr="D20C050"+qishu+'青年大学习截图/'
@@ -30,6 +36,13 @@ def do_wy(request):
             #wx_duixiangcunchu()
         name=request.POST['name']
         number=request.POST['number']
+        #存入数据库
+        xinxidb.name=name
+        xinxidb.studentnum=number
+        xinxidb.qishu=qishu
+        xinxidb.save()
+        #存入session
+        request.session['num']=1
         myfile=request.FILES.get("img")
         if not myfile:
             return HttpResponse("没有上传截图")

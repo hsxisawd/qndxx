@@ -16,3 +16,5 @@ class Student(models.Model):
         return {'name':self.name,'num':self.name}
 class Num(models.Model):
     num=models.IntegerField()
+    qishuname=models.CharField(max_length=250,null=True)
+    qdlink=models.CharField(max_length=255,null=True)

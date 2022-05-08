@@ -45,6 +45,7 @@
                 </div>
                 <div class=" py-3 text-black d-flex justify-content-center" >
                     <h1><b>D20C050截图提交</b></h1>
+                    <a class="text-warning" href="https://{{ qdlink }}{{ qishuname }}">最新一期：{{ qishuname }}</a>
                 </div>
                 <div class="container w-70 h-100" style="">
                     <p class="text-center text-danger"><b>未提交的名单</b></p>
@@ -74,7 +75,11 @@
                             <label for="flie"  class="form-label"><h4><b>请上传截图:</b></h4></label>
                             <input id="flie" name="img" class="form-control-lg" type="file"/>
                         </div>
+                     {% if request.session.num == 0 %}
                         <button type="submit" class="container-md btn btn-lg btn-primary"> 提交 </button>
+                     {% else %}
+                        <input disabled="disabled" type="submit" class="container-md btn btn-lg btn-primary"> 你已提交，不能再提交 </input>
+                     {% endif %}
                     </div>
                 </form>
             </div>
