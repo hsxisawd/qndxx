@@ -14,7 +14,7 @@ qndxxlist=[i for i in range(1,16)]
 evpath = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/static/img/'
 print(evpath)
 def wy(request):
-
+    request.session['num']=0
     student = Student.objects.filter(status=0)
     slist = [a.name for a in student]
     strlist = '、'.join(slist)

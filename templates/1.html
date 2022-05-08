@@ -19,6 +19,9 @@
         border: 2px solid; 
         border-radius: 20%;
     }
+    a{
+        text-decoration: none;
+    }
 </style>
 <body>
     <nav class="navbar bg-dark navbar-dark navbar-expand-lg ">
@@ -30,7 +33,7 @@
             <div class="collapse navbar-collapse" id="nav1">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <div  class="nav-link text-white">青年大学习</div>
+                        <div class="nav-link text-white">青年大学习</div>
                     </li>
                 </ul>
             </div>
@@ -45,7 +48,9 @@
                 </div>
                 <div class=" py-3 text-black d-flex justify-content-center" >
                     <h1><b>D20C050截图提交</b></h1>
-                    <a class="text-warning" href="https://{{ qdlink }}{{ qishuname }}">最新一期：{{ qishuname }}</a>
+                </div>
+                <div class=" py-3 d-flex justify-content-center">
+                    <a class="text-danger" href="https://{{ qdlink }}{{ qishuname }}"><b>最新一期： </b>{{ qishuname }}</a>
                 </div>
                 <div class="container w-70 h-100" style="">
                     <p class="text-center text-danger"><b>未提交的名单</b></p>
@@ -78,7 +83,7 @@
                      {% if request.session.num == 0 %}
                         <button type="submit" class="container-md btn btn-lg btn-primary"> 提交 </button>
                      {% else %}
-                        <input disabled="disabled" type="submit" class="container-md btn btn-lg btn-primary"> 你已提交，不能再提交 </input>
+                        <input disabled="disabled" type="submit" class="container-md btn btn-lg btn-primary" value="{{ request.session.num }}">
                      {% endif %}
                     </div>
                 </form>

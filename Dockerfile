@@ -28,7 +28,7 @@ RUN pip config set global.index-url http://mirrors.cloud.tencent.com/pypi/simple
 && pip install --user -r requirements.txt
 
 # 设定对外端口
-EXPOSE 80
+EXPOSE 8000
 
 # 设定启动命令
 CMD ["python3","manage.py","runserver","0.0.0.0:80"]
