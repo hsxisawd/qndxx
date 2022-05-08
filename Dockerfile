@@ -31,4 +31,4 @@ RUN pip config set global.index-url http://mirrors.cloud.tencent.com/pypi/simple
 EXPOSE 80
 
 # 设定启动命令
-CMD ['python3','/app/manage.py','runserver','0.0.0.0:80']
+CMD ['python3','manage.py','runserver','0.0.0.0:80']
