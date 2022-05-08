@@ -31,4 +31,4 @@ RUN pip config set global.index-url http://mirrors.cloud.tencent.com/pypi/simple
 EXPOSE 80
 
 # 设定启动命令
-CMD ['sh','-c','/app/run.sh']
+CMD ['sh','run.sh']

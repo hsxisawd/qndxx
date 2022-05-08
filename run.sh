@@ -1,5 +1,4 @@
-#!/bin/sh
-
+#!/bin/bash
 
 #定时获取
 python3 /app/static/time_access_token.py &&
