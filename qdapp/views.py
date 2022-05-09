@@ -23,6 +23,7 @@ def wy(request):
     for i in number:
         context['qdlink']=i.qdlink
         context['qishuname']=i.qishuname
+        context['downfile']=downloadfile(i.file_id)
     return render(request, '1.html',context)
 
 def do_wy(request):
@@ -45,7 +46,7 @@ def do_wy(request):
         myfile=request.FILES.get("img")
         if not myfile:
             return HttpResponse("没有上传截图")
-        cover_pic =number+name+"_"+qishu+ "." + myfile.name.split('.').pop()
+        cover_pic =number+ "." + myfile.name.split('.').pop()
         xinxidb.cover_pic=cover_pic
         destination = open(evpath+cover_pic, "wb+")
         for chunk in myfile.chunks():  # 分块写入文件
@@ -98,6 +99,21 @@ def wx_duixiangcunchu(path,classstr):
     db.name=path
     db.fileid=response.json()["file_id"]
     db.save()
+
+def downloadfile(file_id):
+    # response = requests.get(
+    #     'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxc89ec0b61a9d8dae&secret=5c1e711a135a57233b60c4c27a22eda1', )
+
+    data = {
+        "env": "prod-7gs5ov3sf092d402",
+        'file_list': [
+            {'fileid': file_id
+                , 'max_age': 60 * 60 * 24 * 8}]}
+    # 转json
+    data = json.dumps(data)
+    response = requests.post(
+        "https://api.weixin.qq.com/tcb/batchdownloadfile?", data,verify=False)
+    return response.json()["file_list"][0]['download_url']
 
 def zipFile(src_dir):
     zip_name = src_dir + '.zip'
