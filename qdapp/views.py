@@ -31,9 +31,6 @@ def do_wy(request):
     xinxidb=Xinxi()
     if num.num!=24:
         qishu=request.POST['qda']
-        classstr="D20C050"+qishu+'青年大学习截图/'
-        if os.path.exists(evpath+classstr)==False:
-            os.makedirs(evpath+classstr)
             #wx_duixiangcunchu()
         name=request.POST['name']
         number=request.POST['number']
@@ -48,9 +45,9 @@ def do_wy(request):
         myfile=request.FILES.get("img")
         if not myfile:
             return HttpResponse("没有上传截图")
-        cover_pic =number+name+ "." + myfile.name.split('.').pop()
+        cover_pic =number+name+"_"+qishu+ "." + myfile.name.split('.').pop()
         xinxidb.cover_pic=cover_pic
-        destination = open(evpath+classstr+cover_pic, "wb+")
+        destination = open(evpath+cover_pic, "wb+")
         for chunk in myfile.chunks():  # 分块写入文件
             destination.write(chunk)
         destination.close()
@@ -63,16 +60,9 @@ def do_wy(request):
             print('error')
         num.num=num.num+1
         num.save()
-
+        classstr=evpath+cover_pic
+        wx_duixiangcunchu(cover_pic, classstr)
     if NUmber==24:
-        qishu=request.POST['qda']
-        path="D20C050"+qishu+'青年大学习截图'
-        classstr=evpath+path
-        zipFile(classstr)
-        print(path+'.zip',classstr+'.zip')
-        wx_duixiangcunchu(path+'.zip',classstr+'.zip')
-        os.remove(classstr+'.zip')
-        shutil.rmtree(classstr)
         student=Student.objects.filter(status=1)
         student.update(status=0)
         num.num=0
@@ -82,15 +72,15 @@ def do_wy(request):
 
 def wx_duixiangcunchu(path,classstr):
       #获取token
-    #response = requests.get(
-          #'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxc89ec0b61a9d8dae&secret=5c1e711a135a57233b60c4c27a22eda1')
+    # response = requests.get(
+    #       'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxc89ec0b61a9d8dae&secret=5c1e711a135a57233b60c4c27a22eda1')
     data ={
         "env": "prod-7gs5ov3sf092d402",
         "path": "image/"+path
       }#需填入env和path
     #转json
     data = json.dumps(data)
-    #response = requests.post("https://api.weixin.qq.com/tcb/uploadfile?access_token="+response.json()['access_token'],data,verify = False)
+    # response = requests.post("https://api.weixin.qq.com/tcb/uploadfile?access_token="+response.json()['access_token'],data,verify = False)
     response = requests.post(
           "https://api.weixin.qq.com/tcb/uploadfile", data,
           verify=False)
