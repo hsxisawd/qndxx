@@ -112,7 +112,7 @@ def downloadfile(file_id):
     # 转json
     data = json.dumps(data)
     response = requests.post(
-        "https://api.weixin.qq.com/tcb/batchdownloadfile?", data,verify=False)
+        "https://api.weixin.qq.com/tcb/batchdownloadfile", data,verify=False)
     return response.json()["file_list"][0]['download_url']
 
 def zipFile(src_dir):
