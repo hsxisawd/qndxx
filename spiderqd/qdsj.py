@@ -51,7 +51,7 @@ def inmysql(title,href):
     print('插入成功！')
 def upphoto(path,classstr):
     # 获取token
-
+    response=requests.get('https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxc89ec0b61a9d8dae&secret=5c1e711a135a57233b60c4c27a22eda1')
     data = {
         "env": "prod-7gs5ov3sf092d402",
         "path": "img/" + path

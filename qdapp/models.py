@@ -5,7 +5,9 @@ class Xinxi(models.Model):
     name=models.CharField(max_length=250)
     studentnum=models.CharField(max_length=250)
     qishu=models.CharField(max_length=250)
-
+    create_at = models.DateTimeField(default=datetime.now)  # 创建时间
+    update_at = models.DateTimeField(default=datetime.now)
+    cover_pic=models.CharField(max_length=250,default='')
 class Fileid(models.Model):
     fileid=models.CharField(max_length=250)
     name=models.CharField(max_length=250)

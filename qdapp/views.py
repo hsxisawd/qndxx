@@ -1,7 +1,7 @@
 import os
 import time
 import zipfile
-import datetime
+from datetime import datetime
 import shutil
 from django.http import HttpResponse
 from django.shortcuts import render,redirect,reverse
@@ -12,9 +12,9 @@ import requests
 
 qndxxlist=[i for i in range(1,16)]
 evpath = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/static/img/'
+#evpath = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'\\static\\img\\'
 print(evpath)
 def wy(request):
-    request.session['num']=0
     student = Student.objects.filter(status=0)
     slist = [a.name for a in student]
     strlist = '、'.join(slist)
@@ -24,6 +24,7 @@ def wy(request):
         context['qdlink']=i.qdlink
         context['qishuname']=i.qishuname
     return render(request, '1.html',context)
+
 def do_wy(request):
     num=Num.objects.get(id=1)
     NUmber=num.num+1
@@ -40,17 +41,20 @@ def do_wy(request):
         xinxidb.name=name
         xinxidb.studentnum=number
         xinxidb.qishu=qishu
-        xinxidb.save()
+        xinxidb.create_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        xinxidb.update_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         #存入session
         request.session['num']=1
         myfile=request.FILES.get("img")
         if not myfile:
             return HttpResponse("没有上传截图")
-        cover_pic = str(time.time()) + "." + myfile.name.split('.').pop()
+        cover_pic =number+name+ "." + myfile.name.split('.').pop()
+        xinxidb.cover_pic=cover_pic
         destination = open(evpath+classstr+cover_pic, "wb+")
         for chunk in myfile.chunks():  # 分块写入文件
             destination.write(chunk)
         destination.close()
+        xinxidb.save()
         try:
             db=Student.objects.get(name=name)
             db.status=1
@@ -59,6 +63,7 @@ def do_wy(request):
             print('error')
         num.num=num.num+1
         num.save()
+
     if NUmber==24:
         qishu=request.POST['qda']
         path="D20C050"+qishu+'青年大学习截图'
@@ -77,13 +82,18 @@ def do_wy(request):
 
 def wx_duixiangcunchu(path,classstr):
       #获取token
+    #response = requests.get(
+          #'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxc89ec0b61a9d8dae&secret=5c1e711a135a57233b60c4c27a22eda1')
     data ={
         "env": "prod-7gs5ov3sf092d402",
         "path": "image/"+path
       }#需填入env和path
     #转json
     data = json.dumps(data)
-    response = requests.post("https://api.weixin.qq.com/tcb/uploadfile",data,verify = False)
+    #response = requests.post("https://api.weixin.qq.com/tcb/uploadfile?access_token="+response.json()['access_token'],data,verify = False)
+    response = requests.post(
+          "https://api.weixin.qq.com/tcb/uploadfile", data,
+          verify=False)
       #得到上传链接
     data2={
         "Content-Type":(None,".zip"), #此处为上传文件类型
