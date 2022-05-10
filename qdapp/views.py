@@ -115,14 +115,5 @@ def downloadfile(file_id):
         "https://api.weixin.qq.com/tcb/batchdownloadfile", data,verify=False)
     return response.json()["file_list"][0]['download_url']
 
-def zipFile(src_dir):
-    zip_name = src_dir + '.zip'
-    z = zipfile.ZipFile(zip_name, 'w', zipfile.ZIP_DEFLATED)
-    for dirpath, dirnames, filenames in os.walk(src_dir):
-        fpath = dirpath.replace(src_dir, '')
-        fpath = fpath and fpath + os.sep or ''
-        for filename in filenames:
-            z.write(os.path.join(dirpath, filename), fpath + filename)
-        print('==压缩成功==')
-    z.close()
+
 

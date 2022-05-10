@@ -28,11 +28,12 @@ def spider(url,hed):
     name=selectmysql()
     print(name)
     if name!=atitle:
-        inmysql(atitle,ahref)
         photo=requests.get(imgsrc,headers=hed,verify=False).content
-        with open(evpath+atitle+'.jpg','wb') as f:
+        filename=str(time.time())+'.jpg'
+        with open(evpath+filename,'wb') as f:
             f.write(photo)
-        upphoto(atitle+'.jpg',evpath+atitle+'.jpg')
+        file_id=upphoto(filename,evpath+filename)
+        inmysql(atitle,ahref,file_id)
     print("执行成功！")
     cursor.close()
     conn.close()
@@ -44,21 +45,23 @@ def selectmysql():
     mysqlvalue =cursor.fetchall()
     return mysqlvalue[0][0]
 
-def inmysql(title,href):
-    sql="update  qdapp_num set qdlink='%s',qishuname='%s'  where id = 1;"%(href, title)
+def inmysql(title,href,file_id):
+    sql="update  qdapp_num set qdlink='%s',qishuname='%s',file_id='%s'  where id = 1;"%(href, title,file_id)
     cursor.execute(sql)
     conn.commit()
     print('插入成功！')
+
 def upphoto(path,classstr):
     # 获取token
-    response=requests.get('https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxc89ec0b61a9d8dae&secret=5c1e711a135a57233b60c4c27a22eda1')
+    response = requests.get(
+        'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxc89ec0b61a9d8dae&secret=5c1e711a135a57233b60c4c27a22eda1')
     data = {
         "env": "prod-7gs5ov3sf092d402",
         "path": "img/" + path
     }  # 需填入env和path
     # 转json
     data = json.dumps(data)
-    response = requests.post("https://api.weixin.qq.com/tcb/uploadfile",data, verify=False)
+    response = requests.post("https://api.weixin.qq.com/tcb/uploadfile?access_token="+response.json()['access_token'],data, verify=False)
     # 得到上传链接
     data2 = {
         "Content-Type": (None, ".zip"),  # 此处为上传文件类型
@@ -69,11 +72,11 @@ def upphoto(path,classstr):
         'file': (path, open(classstr, "rb"))  # 需填入本地文件路径
     }
     response2 = requests.post(response.json()['url'], files=data2,verify=False)  # 此处files提交的为表单数据，不为json数据，json数据或其他数据会报错
-
+    return response.json()['file_id']
 if __name__=='__main__':
     url = 'https://www.51daxuexi.com/?page=1'
     hed = {
         "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36"}
     while True:
         spider(url,hed)
-        time.sleep(60*60*24)
+        time.sleep(60*60*8)
